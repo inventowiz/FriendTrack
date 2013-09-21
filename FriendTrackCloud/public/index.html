@@ -1,15 +1,23 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Friend Trakr</title>
-	<script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
-	<script>
+<title>Friend Trakr</title>
+<LINK href="css/bootstrap.css" rel="stylesheet" type="text/css">
+<LINK href="css/styles.css" rel="stylesheet" type="text/css">
+<!--[if !IE 7]>
+	<style type="text/css">
+		#wrap {display:table;height:100%}
+	</style>
+<![endif]-->
+<script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
+<script>
 		Parse.initialize("JVCY4huGJULCwo1KZsccMPeYEziDFgzvT19rrC4q", "CdveiRvI445ugKzGJe0IJbpMEgYYDNUb4kQpi71W");
 	</script>
 </head>
 <body>
-<div id="fb-root"></div>
-<script>
+	<div id="fb-root"></div>
+	<script>
+	/*
   window.fbAsyncInit = function() {
   FB.init({
     appId      : '442507209202396', // App ID
@@ -67,15 +75,27 @@
       console.log('Good to see you, ' + response.name + '.');
     });
   }
+  */
 </script>
 
-<!--
+	<!--
   Below we include the Login Button social plugin. This button uses the JavaScript SDK to
   present a graphical Login button that triggers the FB.login() function when clicked.
 
   Learn more about options for the login button plugin:
   /docs/reference/plugins/login/ -->
-
-<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
+	<div id="wrap">
+		<div id="main" style="text-align: center">
+			<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
+			<button class="btn">TestButtonSwag</button>
+		</div>
+		<div class="container">
+			<div class="row-fluid">
+				<div id="footerTextDiv" class="span8 offset2">
+					Friend Trakr Copyright 2013</br> GO BLUE #MHACKS
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

@@ -33,7 +33,7 @@ Parse.Cloud.define("addUser",function(request,response){
 	var newuser = new User();
 		
 	newuser.set("fb_id",request.params.fb_id);
-	newuser.set("friends",[]);
+	newuser.set("join_date",new Date());
 	newuser.save(null,{
 		error: function(newuser,error){
 			response.error("Saving screwed up somewhere.");
@@ -44,78 +44,47 @@ Parse.Cloud.define("addUser",function(request,response){
 	});
 });
 
-Parse.Cloud.define("addFriendToUser",function(request,response){
+Parse.Cloud.define("addTuple",function(request,response){
+	var Tuple = Parse.Object.extend("friend_tuple");
 	var User = Parse.Object.extend("trakr_user");
-	var friend = Parse.Object.extend("friend");
+	var newtuple = new Tuple();
 	var userQuery = new Parse.Query(User);
 	
-	var newfriend = new friend();
-	
-	newfriend.set("User",request.params.user_id);
-	newfriend.set("fb_id",request.params.fb_id);
-	newfriend.set("friend_percent",50);
-	newfriend.set("last_contacted", new Date("today"));
-	newfriend.save();
-	
-	query.equalTo("fb_id",request.params.user_id);
-	query.find({
-		success: function(results){
-			//do something with what we found
-			if(results.length() === 0)
-				response.error("nothing found for user_id=" + request.params.user_id);
-			var user = results[0]; //just take the first one found
-			var friendarr = user.get("friends"); //should be an array of fb_ids
-			friendarr.push(newfriend.get("fb_id"));
-			response.success("newfriend: " + newfriend.get("fb_id") + " added to UserID: " + user.get("fb_id"));
+	newtuple.save(request.params);
+	userQuery.equalTo("fb_id",request.params.fb_id);
+	userQuery.count({
+		success: function(result){
+			if(result > 0)
+				newtuple.save({friend_is_user:1});
+			else
+				newtuple.save({friend_is_user:0});
 		},
 		error: function(error){
-			response.error("Something went wrong.");
+			response.error("Something in our query went wrong");
 		}
 	});
-	
 });
 
 ///////////////////////////////////
 //////JOBS SECTION
-///////////////////////////////////
+//////////////////////////////////
 
-Parse.Cloud.job("helloworldinit", function(request,status){
-	var helloworld = Parse.Object.extend("helloworld"); //created an init of the helloworld class
-	var foobar = new helloworld(); //make foobar our working var
+Parse.Cloud.job("dec_friendship_percents", function(request,status){
+	var Tuple = Parse.Object.extend("friend_tuple"); //init the helloworld class
+	var query = new Parse.Query(Tuple); //create query class to search the helloworld class
 	
-	foobar.set("count", 15);
-	foobar.set("name", "test15");
-	
-	foobar.save(null, {
-		success: function(foobar){
-			//do this after we're saved.
-		},
-		error: function(foobar,error){
-			//do this on error saving
-			alert("There was an error saving your new data to Parse. ID:" + foobar.id);
-		}
-	}); // end save
-	status.success("reset test15 to 15");
-});
-
-Parse.Cloud.job("helloworlddec", function(request,status){
-	var helloworld = Parse.Object.extend("helloworld"); //init the helloworld class
-	var query = new Parse.Query(helloworld); //create query class to search the helloworld class
-	
-	query.equalTo("name","test15");
+	query.greaterThan("friend_percent", 0); //all tuples with %>0
 	query.find({
 		success: function(results){
 			//do something with what we found
-			var test15 = results[0]; //just take the first one found
-			if(test15.get("count") === 0)
-				test15.set("count", 15);
-			else
-				test15.increment("count",-1);
-			test15.save();
-			status.success("test15 count updated to: " + test15.get("count"));
+			for (var i = 0; i < results.length; i++) { 
+			  var object = results[i];
+			  object.increment("friend_percent",-1);
+			}
+			status.success("Successfully decremented " + results.length + " tuples.");
 		},
 		error: function(error){
-			status.error("nothing found for test15");
+			status.error("Query broke in friend_percent finding");
 		}
 	});
 });

@@ -1,0 +1,12 @@
+#footerTextDiv{
+	text-align:center;
+	position:relative;
+	margin-top: 200px;
+	color: gray;
+}
+
+#wrap{
+	border-width:1px;
+	border-style:dotted;
+	border-color:gray;
+}

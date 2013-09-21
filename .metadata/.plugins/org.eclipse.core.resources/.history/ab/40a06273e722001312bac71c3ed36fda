@@ -1,0 +1,12 @@
+$('#pane1 a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+$('#pane2 a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+$('#pane3 a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})

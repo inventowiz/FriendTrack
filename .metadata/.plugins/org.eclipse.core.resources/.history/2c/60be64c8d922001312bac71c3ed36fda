@@ -1,0 +1,27 @@
+#footerTextDiv{
+	text-align:center;
+	position:relative;
+	margin-top: 200px;
+	color: gray;
+}
+
+#wrap{
+	border-width:1px;
+	border-style:dotted;
+	border-color:gray;
+}
+
+#friendsList{
+	color:blue;
+}
+
+#headerDiv{
+	background-repeat: repeat-x;
+    background-image: url("../images/header.png");
+    height:100px;
+}
+
+#logoDiv{
+	position:relative;
+	margin-top: -100px;
+}

@@ -75,7 +75,6 @@
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
       console.log('Good to see you, ' + response.name + '.');
-      window.location.href = "../main.html";
     });
   }
   
@@ -88,7 +87,7 @@
   Learn more about options for the login button plugin:
   /docs/reference/plugins/login/ -->
 	<div id="wrap">
-		<div class="spacer"></div>
+		<div class="spacer"/>
 		<div id="main" style="text-align: center">
 			<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
 		</div>

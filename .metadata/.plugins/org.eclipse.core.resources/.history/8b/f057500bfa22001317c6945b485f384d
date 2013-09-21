@@ -19,7 +19,7 @@
 	</div>
 	<div id="fb-root"></div>
 	<script>
-	
+	/*
   window.fbAsyncInit = function() {
   FB.init({
     appId      : '442507209202396', // App ID
@@ -75,10 +75,9 @@
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
       console.log('Good to see you, ' + response.name + '.');
-      window.location.href = "../main.html";
     });
   }
-  
+  */
 </script>
 
 	<!--
@@ -88,9 +87,9 @@
   Learn more about options for the login button plugin:
   /docs/reference/plugins/login/ -->
 	<div id="wrap">
-		<div class="spacer"></div>
 		<div id="main" style="text-align: center">
 			<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
+			<button class="btn">TestButtonSwag</button>
 		</div>
 		<div class="container">
 			<div class="row-fluid">

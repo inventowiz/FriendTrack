@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "FriendTrack": {
+            "applicationId": "JVCY4huGJULCwo1KZsccMPeYEziDFgzvT19rrC4q", 
+            "masterKey": "0WrTN3ffTyNqvG3pXc9w0Z1LSmhUp3M0f0cbc8v3"
+        }, 
+        "_default": {
+            "link": "FriendTrack"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.12"
+    }
+}

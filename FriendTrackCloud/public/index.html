@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Friend Trakr</title>
+	<script src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
+  </head>
+  <body>
+	<script>Parse.initialize("JVCY4huGJULCwo1KZsccMPeYEziDFgzvT19rrC4q", "CdveiRvI445ugKzGJe0IJbpMEgYYDNUb4kQpi71W");
+		var TestObject = Parse.Object.extend("TestObject");
+		var testObject = new TestObject();
+		testObject.save({foo: "bar"}, {
+		  success: function(object) {
+			document.write("yay! it worked<br/>");
+		  }
+		})
+		
+		Parse.Cloud.run('hello', {}, {
+		  success: function(result) {
+			// result is 'Hello world!'
+			document.write(result);
+		  },
+		  error: function(error) {
+		  }
+		})
+	</script>
+  </body>
+</html>

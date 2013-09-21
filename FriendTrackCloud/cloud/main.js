@@ -31,7 +31,7 @@ Parse.Cloud.define("userExists",function(request,response){
 Parse.Cloud.define("addUser",function(request,response){
 	var User = Parse.Object.extend("trakr_user");
 	var newuser = new User();
-	
+		
 	newuser.set("fb_id",request.params.fb_id);
 	newuser.set("friends",[]);
 	newuser.save(null,{
@@ -42,20 +42,6 @@ Parse.Cloud.define("addUser",function(request,response){
 			response.success("User: " + newuser.get("fb_id") + " was added successfully.");
 		}
 	});
-	response.error("User: " + request.params.fb_id + " was NOT added successfully.");
-	});
-	
-	newuser.set("fb_id",request.params.fb_id);
-	newuser.set("friends",[]);
-	newuser.save(null,{
-		error: function(newuser,error){
-			response.error("Saving screwed up somewhere.");
-		},
-		success: function(newuser){
-			response.success("User: " + newuser.get("fb_id") + " was added successfully.");
-		}
-	});
-	response.success("User: " + request.params.fb_id + " was added successfully.");
 });
 
 Parse.Cloud.define("addFriendToUser",function(request,response){

@@ -83,8 +83,7 @@
 <script>
 
 </script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	</div>
+<script type="text/javascript" src="http://www.google.com/jsapi?key=API_KEY_GOES_HERE"></script>	</div>
 	<!-- container -->
 
 

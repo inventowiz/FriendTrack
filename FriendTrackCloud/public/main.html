@@ -74,6 +74,14 @@
 		<script type="text/javascript">
     jQuery(document).ready(function ($) {
         $('#tabs').tab();
+		if(FB.getSession() == null) {
+			window.location.href("http://friendtrack.parseapp.com/index.html");
+		}
+		else{
+			FB.api('/me', function(response) {
+				alert ("Welcome " + response.name + ": Your UID is " + response.id); 
+			});
+		}
     });
     
     $( "#progressbar" ).progressbar({

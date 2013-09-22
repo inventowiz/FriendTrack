@@ -2,13 +2,6 @@
 //////CLOUD FUNCTION SECTION
 ///////////////////////////////////
 
-
-// Use Parse.Cloud.define to define as many cloud functions as you want.
-// For example:
-Parse.Cloud.define("hello", function(request, response) {
-  response.success("Hello world!");
-});
-
 Parse.Cloud.define("userExists",function(request,response){
 	var User = Parse.Object.extend("trakr_user");
 	var userQuery = new Parse.Query(User);
@@ -58,33 +51,10 @@ Parse.Cloud.define("addTuple",function(request,response){
 				newtuple.save({friend_is_user:1});
 			else
 				newtuple.save({friend_is_user:0});
+			response.success("Successfully added tuple with params: " + request.params);
 		},
 		error: function(error){
 			response.error("Something in our query went wrong");
-		}
-	});
-});
-
-///////////////////////////////////
-//////JOBS SECTION
-//////////////////////////////////
-
-Parse.Cloud.job("dec_friendship_percents", function(request,status){
-	var Tuple = Parse.Object.extend("friend_tuple"); //init the helloworld class
-	var query = new Parse.Query(Tuple); //create query class to search the helloworld class
-	
-	query.greaterThan("friend_percent", 0); //all tuples with %>0
-	query.find({
-		success: function(results){
-			//do something with what we found
-			for (var i = 0; i < results.length; i++) { 
-			  var object = results[i];
-			  object.increment("friend_percent",-1);
-			}
-			status.success("Successfully decremented " + results.length + " tuples.");
-		},
-		error: function(error){
-			status.error("Query broke in friend_percent finding");
 		}
 	});
 });

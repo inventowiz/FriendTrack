@@ -59,3 +59,53 @@ Parse.Cloud.define("addTuple",function(request,response){
 	});
 });
 
+Parse.Cloud.define("updateTuple",function(request,response){
+	//request should contain friend_id, user_id, and value
+	var Tuple = Parse.Object.extend("friend_tuple"); //init the helloworld class
+	var query = new Parse.Query(Tuple); //create query class to search the helloworld class
+	
+	query.equalTo("user_id", request.params.user_id); //all tuples with the specified user_id
+	query.find({
+		success: function(results){ //linear search through the small amount of tuples
+			//do something with what we found
+			for (var i = 0; i < results.length; i++) { 
+				if(results[i].get("friend_id") === request.params.friend_id){
+					var object = results[i];
+					object.increment("friend_percent",request.params.value);
+					object.save();
+					status.success("Edited tuple (user:" + object.get("user_id") + ", friend:" + object.get("friend_id") + " with a change of " + request.params.value);
+					break;
+				}
+			}
+		},
+		error: function(error){
+			status.error("Query broke in finding your request");
+		}
+	});
+
+});
+
+///////////////////////////////////
+//////JOBS SECTION
+//////////////////////////////////
+
+Parse.Cloud.job("dec_friendship_percents", function(request,status){
+	var Tuple = Parse.Object.extend("friend_tuple"); //init the helloworld class
+	var query = new Parse.Query(Tuple); //create query class to search the helloworld class
+	
+	query.greaterThan("friend_percent", 0); //all tuples with %>0
+	query.find({
+		success: function(results){
+			//do something with what we found
+			for (var i = 0; i < results.length; i++) { 
+			  var object = results[i];
+			  object.increment("friend_percent",-1);
+			  object.save();
+			}
+			status.success("Successfully decremented " + results.length + " tuples.");
+		},
+		error: function(error){
+			status.error("Query broke in friend_percent finding");
+		}
+	});
+});

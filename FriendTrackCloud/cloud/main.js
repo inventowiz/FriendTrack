@@ -66,6 +66,33 @@ Parse.Cloud.define("addTuple",function(request,response){
 	});
 });
 
+Parse.Cloud.define("removeTuple",function(request,response){
+	Parse.Cloud.useMasterKey();
+	//request should contain friend_id, user_id
+	var Tuple = Parse.Object.extend("friend_tuple"); //init the  class
+	var query = new Parse.Query(Tuple); //create query class to search the class
+	
+	query.equalTo("user_id", request.params.user_id); //all tuples with the specified user_id
+	query.find({
+		success: function(results){ //linear search through the small amount of tuples
+			//do something with what we found
+			for (var i = 0; i < results.length; i++) { 
+				if(results[i].get("friend_id") === request.params.friend_id){
+					var object = results[i];
+					object.destroy().then(function(){
+						status.success("Removed a tuple");
+					});
+					break;
+				}
+			}
+		},
+		error: function(error){
+			status.error("Query broke in finding your request");
+		}
+	});
+
+});
+
 Parse.Cloud.define("updateTuple",function(request,response){
 	Parse.Cloud.useMasterKey();
 	//request should contain friend_id, user_id, and value
@@ -157,11 +184,9 @@ Parse.Cloud.job("dec_friendship_percents", function(request,status){
 		var promises = [];
 		console.log(JSON.stringify(results));
 		Parse._.each(results,function(result){
-			promises.push(function(result){
-				result.increment("friend_percent",-1);
-				console.log("object: " + object.objectID + " decremented by 1");
-				result.save();
-			});
+			result.increment("friend_percent",-1);
+			//console.log("object: " + object.objectId + " decremented by 1");
+			promises.push(result.save());
 		});
 		return Parse.Promise.when(promises);
 	}).then(function() {
